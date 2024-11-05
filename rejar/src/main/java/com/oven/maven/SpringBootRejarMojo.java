@@ -25,18 +25,27 @@ public class SpringBootRejarMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
+        getLog().info("rejar start");
         try {
             String jarFilePath = this.outputDirectory.getPath() + File.separator + this.finalName + ".jar";
+            getLog().info("jarFilePath=" + jarFilePath);
             File jarFile = new File(jarFilePath);
             File jarFileTemp = new File(this.outputDirectory.getPath() + File.separator + "temp");
+            getLog().info("Start un jar to temp directory");
             ZipUtil.unpack(jarFile, jarFileTemp);
+            getLog().info("Start delete temp BOOT-INF/classes directory");
             FileUtils.deleteDirectory(new File(jarFileTemp.getPath() + File.separator + "BOOT-INF" + File.separator + "classes"));
+            getLog().info("move jar to jar.bak");
             FileUtils.moveFile(jarFile, new File(jarFilePath + ".bak"));
+            getLog().info("jar temp files");
             ZipUtil.pack(jarFileTemp, new File(this.outputDirectory.getPath() + File.separator + this.finalName + ".jar"));
+            getLog().info("Start delete temp directory");
             FileUtils.deleteDirectory(jarFileTemp);
-        } catch (Exception e) {
+        }catch (Exception e){
+            getLog().error(e);
             throw new MojoExecutionException(e.getMessage(), e);
         }
+        getLog().info("rejar end");
     }
 
 }
