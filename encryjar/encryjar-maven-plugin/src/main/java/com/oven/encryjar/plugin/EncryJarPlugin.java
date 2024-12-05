@@ -5,6 +5,7 @@ import com.oven.encryjar.JarEncryptor;
 import com.oven.encryjar.util.StrUtils;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -55,9 +56,13 @@ public class EncryJarPlugin extends AbstractMojo {
      */
     public void execute() {
         Const.DEBUG = debug;
+        Log logger = getLog();
         Build build = project.getBuild();
 
+        long start = System.currentTimeMillis();
+
         String targetJar = build.getDirectory() + File.separator + build.getFinalName() + "." + project.getPackaging();
+        logger.info("Encrypting " + project.getPackaging() + " [" + targetJar + "]");
         List<String> includeJarList = StrUtils.toList(libjars);
         List<String> packageList = StrUtils.toList(packages);
         List<String> excludeClassList = StrUtils.toList(excludes);
@@ -73,6 +78,14 @@ public class EncryJarPlugin extends AbstractMojo {
         encryptor.setClassPath(classPathList);
         encryptor.setCfgfiles(cfgFileList);
         String result = encryptor.doEncryptJar();
+
+        long end = System.currentTimeMillis();
+
+        logger.info("Encrypt " + encryptor.getEncryptFileCount() + " classes");
+        logger.info("Encrypted " + project.getPackaging() + " [" + result + "]");
+        logger.info("Encrypt complete");
+        logger.info("Time [" + ((end - start) / 1000d) + " s]");
+        logger.info("");
     }
 
 }
