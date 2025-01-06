@@ -1,13 +1,13 @@
 ### Description
 
-##### plugin one: gitconfig
+##### 插件一: gitconfig
 
 > gitconfig
 
-##### plugin two: githook
+##### 插件二: githook
 
 > githook
 
-##### plugin three: rejar
+##### 插件三: rejar
 
 > rejar
