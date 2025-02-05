@@ -18,7 +18,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.oven.encryjar</groupId>
+            <groupId>com.oven</groupId>
             <artifactId>encryjar-core</artifactId>
             <version>1.0.0</version>
         </dependency>
